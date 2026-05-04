@@ -1,0 +1,8 @@
+{
+    "vit_baseline": {
+        "accuracy": 0.9713091922005571
+    },
+    "medgemma_qlora": {
+        "accuracy": 0.26016713091922006
+    }
+}

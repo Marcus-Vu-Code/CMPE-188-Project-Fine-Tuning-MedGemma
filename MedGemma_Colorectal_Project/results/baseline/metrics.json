@@ -1,0 +1,18 @@
+{
+  "accuracy": 0.9676880222841225,
+  "precision_weighted": 0.9677630119778884,
+  "recall_weighted": 0.9676880222841225,
+  "f1_weighted": 0.9676146845896292,
+  "num_samples": 7180,
+  "class_names": [
+    "ADI",
+    "BACK",
+    "DEB",
+    "LYM",
+    "MUC",
+    "MUS",
+    "NORM",
+    "STR",
+    "TUM"
+  ]
+}
