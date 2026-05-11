@@ -1,0 +1,13 @@
+{
+  "model": "base_medgemma_no_qlora",
+  "kaggle_gpu": "Tesla P100-PCIE-16GB",
+  "num_samples": 7180,
+  "num_valid_predictions": 7180,
+  "num_unknown_predictions": 0,
+  "accuracy_all_predictions_unknown_counted_wrong": 0.2532033426183844,
+  "macro_f1_all_predictions_unknown_counted_wrong": 0.15294842891445548,
+  "weighted_f1_all_predictions_unknown_counted_wrong": 0.15736664145236207,
+  "accuracy_valid_predictions_only": 0.2532033426183844,
+  "macro_f1_valid_predictions_only": 0.15294842891445548,
+  "weighted_f1_valid_predictions_only": 0.15736664145236207
+}

@@ -96,3 +96,69 @@ Open and run the relevant notebook in Google Colab:
 - PEFT: https://github.com/huggingface/peft
 - TRL: https://github.com/huggingface/trl
 - Dataset source: https://zenodo.org/records/1214456
+
+## Project Proposal (summary)
+Project Proposal: Clinical Decision Support System via Parameter-Efficient Fine-Tuning (PEFT) of MedGemma
+
+Team Members:
+- Marcus Vu — marcus.vu@sjsu.edu
+
+Proposed application area: ML model training for colorectal histopathology classification.
+
+Dataset and features (NCT-CRC-HE-100K):
+- Size: 100,000 image patches (224×224 px) from H&E-stained histology.
+- Features: RGB image patch (PIL image); nine tissue classes (Adipose, Background, Debris, Lymphocytes, Mucus, Smooth Muscle, Normal Colon Mucosa, Cancer-Associated Stroma, Colorectal Adenocarcinoma Epithelium).
+- Labels: categorical integer labels for supervised fine-tuning.
+
+Final demo (planned):
+- Interactive web application (Gradio or Streamlit) with a "Clinician's Portal" for uploading biopsy image patches.
+- Backend: fine-tuned MedGemma-4B via QLoRA (or fallback MedSigLIP + classifier) producing class predictions and confidence-score bar chart.
+- Additional view: "Model Comparison" showing improvement of fine-tuned MedGemma vs base MedGemma on clinical reasoning tasks.
+
+## Notebooks (Colab and Kaggle)
+This repo contains both Colab and Kaggle-targeted notebooks. Use Colab for interactive GPU runs; use Kaggle when testing on T4/P100 with provided kernels.
+
+Colab-focused notebooks:
+- `clinical_decision_support_baseline_notebook (2).ipynb`
+- `clinical_decision_support_full_project_medgemmaV2.ipynb`
+- `improved_medgemma_qlora_histopathology_colabV3.ipynb`
+
+Kaggle-focused or alternate-run notebooks:
+- `medgemma_unsloth_qlora_crc_kaggle_v26_disable_compile.ipynb`
+- `medgemma_unsloth_qlora_crc_kaggle_p100_lowmem_v14.ipynb`
+- `medgemma_unsloth_stop_decision_diagnostic_v34.ipynb` (diagnostic evidence for Unsloth 4-bit path)
+
+If running on Kaggle, be aware of tighter RAM and compilation differences; follow notebook-specific instructions and disable any problematic TorchDynamo/compile options when noted.
+
+## Unsloth 4-bit MedGemma diagnostic (summary & recommendation)
+Summary of issue:
+- When loading MedGemma via Unsloth's 4-bit path on Kaggle (T4/P100), the frozen base model produced non-finite (all-NaN) logits during a simple text-only forward pass. This occurred before images, adapters, labels, loss, or optimizer steps — making training impossible because QLoRA depends on a numerically valid frozen forward pass.
+
+What was ruled out:
+- Dataset, label mapping, LoRA settings, optimizer/scheduler, gradient clipping, learning rate, image casts, and other training hyperparameters were not the cause.
+
+Mitigations attempted:
+- Fixed HF Hub version mismatches, tokenizers, removed torchao, tested Torch 2.6, used eager attention, disabled TorchDynamo/compile, cast vision tower and multimodal projector to float32, applied SigLIP LayerNorm patch, tested two Unsloth repos and both T4 and P100 stacks.
+
+Diagnostic conclusion:
+- The Unsloth-loaded 4-bit MedGemma path produced numerically invalid base forward outputs on the tested Kaggle stacks; therefore we did not proceed with Unsloth 4-bit QLoRA for final training.
+
+Recommendation:
+- Use a standard Hugging Face PEFT QLoRA path with MedGemma (or MedSigLIP image encoder + 9-class classifier) for reproducible fine-tuning.
+- Preserve the `medgemma_unsloth_stop_decision_diagnostic_v34.ipynb` as the evidence artifact for the Unsloth attempt.
+
+Suggested report wording (short):
+"We attempted Unsloth QLoRA for MedGemma because it promised lower-memory fine-tuning. Diagnostic preflight tests showed Unsloth-loaded 4-bit MedGemma produced non-finite logits on a text-only forward pass (Kaggle T4/P100). Because the frozen base forward pass was numerically invalid, we did not move the Unsloth 4-bit path forward and instead used a standard Hugging Face PEFT/QLoRA path for a valid trainable model."
+
+## Reproducibility & runs
+- Use the Colab notebooks for step-by-step runs with GPU. Ensure `requirements.txt` versions align with the notebook environment.
+- For Kaggle runs, follow the specific notebook notes and keep `UNSLOTH_COMPILE_DISABLE=1` for debugging when applicable.
+
+## References (expanded)
+- MedGemma Official Notebooks: Google Health — MedGemma GitHub
+- PEFT: https://github.com/huggingface/peft
+- TRL: https://github.com/huggingface/trl
+- NCT-CRC-HE-100K: https://zenodo.org/records/1214456
+
+---
+Appended project proposal, notebook guidance, Unsloth diagnostic summary, and recommended next steps.

@@ -21,3 +21,12 @@ wandb/
 .DS_Store
 Thumbs.db
 .vscode/*.log
+
+# Large model artifacts - exclude safetensors and optimizer checkpoints from commits
+*.safetensors
+**/model.safetensors
+**/optimizer.pt
+
+# Explicit model/output folders (already covered, keep explicit for clarity)
+MedGemma_Colorectal_Project/models/
+MedGemma_Colorectal_Project/outputs/

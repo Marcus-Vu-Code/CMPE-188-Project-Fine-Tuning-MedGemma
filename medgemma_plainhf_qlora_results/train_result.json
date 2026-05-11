@@ -1,0 +1,5 @@
+{
+  "train_minutes": 154.88015075127285,
+  "train_result": "TrainOutput(global_step=75, training_loss=42.71845698038737, metrics={'train_runtime': 9292.2834, 'train_samples_per_second': 0.129, 'train_steps_per_second': 0.008, 'total_flos': 1.0251819099648e+16, 'train_loss': 42.71845698038737, 'epoch': 0.6666666666666666})",
+  "model_id": "google/medgemma-1.5-4b-it"
+}
