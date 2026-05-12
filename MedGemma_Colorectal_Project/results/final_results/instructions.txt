@@ -1,1 +1,0 @@
-To run the Gradio demo app, simply execute the corresponding cell in the Colab notebook. Ensure the gradio package is installed. The app will provide a public URL to access the interface for Colorectal Cancer Tissue Classification.

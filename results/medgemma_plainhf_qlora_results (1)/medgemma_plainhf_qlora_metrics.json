@@ -1,0 +1,13 @@
+{
+  "model": "medgemma_plainhf_qlora_v40",
+  "base_model": "google/medgemma-1.5-4b-it",
+  "gpu": "Tesla T4",
+  "num_eval_samples": 450,
+  "accuracy": 0.8711111111111111,
+  "macro_f1": 0.8719016501812304,
+  "weighted_f1": 0.8719016501812306,
+  "train_per_class": 400,
+  "max_steps": 150,
+  "lora_r": 8,
+  "learning_rate": 0.0001
+}
